@@ -1,0 +1,1053 @@
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background: #f5f7fb;
+  color: #182230;
+}
+
+button {
+  font-family: inherit;
+}
+
+
+/* =========================================================
+   APP
+========================================================= */
+
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+  width: 250px;
+  min-height: 100vh;
+
+  background: #111827;
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  padding: 24px 18px;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 4px 8px 30px;
+}
+
+.logo-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #7c3aed;
+  color: white;
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.logo h1 {
+  margin: 0;
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.logo span {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #9ca3af;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 12px 14px;
+
+  border-radius: 9px;
+
+  color: #9ca3af;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.nav-item span {
+  width: 18px;
+  text-align: center;
+}
+
+.nav-item:hover {
+  background: #1f2937;
+  color: white;
+}
+
+.nav-item.active {
+  background: #2b1b4d;
+  color: #c4b5fd;
+}
+
+
+/* =========================================================
+   SIDEBAR STATUS
+========================================================= */
+
+.sidebar-bottom {
+  margin-top: auto;
+}
+
+.agent-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 14px;
+
+  background: #18212f;
+
+  border: 1px solid #263244;
+
+  border-radius: 10px;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+
+  border-radius: 50%;
+
+  background: #22c55e;
+
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12);
+}
+
+.agent-status strong {
+  display: block;
+
+  font-size: 12px;
+}
+
+.agent-status small {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #9ca3af;
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+  margin-left: 250px;
+
+  width: calc(100% - 250px);
+
+  padding: 30px 34px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 28px;
+}
+
+.header h2 {
+  margin: 0;
+
+  font-size: 27px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.header p {
+  margin: 6px 0 0;
+
+  color: #6b7280;
+
+  font-size: 13px;
+}
+
+.refresh-btn {
+  border: none;
+
+  padding: 10px 16px;
+
+  border-radius: 8px;
+
+  background: white;
+
+  color: #374151;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.refresh-btn:hover {
+  background: #f3f4f6;
+}
+
+
+/* =========================================================
+   KPI GRID
+========================================================= */
+
+.kpi-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 16px;
+
+  margin-bottom: 18px;
+}
+
+.kpi-card {
+  background: white;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 12px;
+
+  padding: 20px;
+
+  box-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.03);
+}
+
+.kpi-label {
+  color: #6b7280;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.kpi-value {
+  margin-top: 9px;
+
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.kpi-value.purple {
+  color: #7c3aed;
+}
+
+.kpi-value.green {
+  color: #16a34a;
+}
+
+.kpi-description {
+  margin-top: 6px;
+
+  color: #9ca3af;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   SECONDARY METRICS
+========================================================= */
+
+.secondary-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 16px;
+
+  margin-bottom: 24px;
+}
+
+.metric-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  background: white;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 11px;
+
+  padding: 15px 17px;
+}
+
+.metric-icon {
+  width: 35px;
+  height: 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: #f3f4f6;
+
+  color: #4b5563;
+
+  font-weight: 800;
+}
+
+.metric-icon.pending {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+.metric-icon.danger {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.metric-card small {
+  display: block;
+
+  color: #9ca3af;
+
+  font-size: 10px;
+}
+
+.metric-card strong {
+  display: block;
+
+  margin-top: 3px;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   PANEL
+========================================================= */
+
+.panel {
+  background: white;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 13px;
+
+  margin-bottom: 24px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.025);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 21px 23px;
+
+  border-bottom: 1px solid #eef0f3;
+}
+
+.panel-header h3 {
+  margin: 0;
+
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.panel-header p {
+  margin: 5px 0 0;
+
+  color: #9ca3af;
+
+  font-size: 11px;
+}
+
+.transaction-count {
+  color: #6b7280;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  min-width: 1050px;
+}
+
+thead {
+  background: #fafafa;
+}
+
+th {
+  padding: 13px 15px;
+
+  color: #6b7280;
+
+  text-align: left;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.4px;
+}
+
+td {
+  padding: 15px;
+
+  border-top: 1px solid #f0f1f3;
+
+  font-size: 12px;
+
+  vertical-align: middle;
+}
+
+tbody tr:hover {
+  background: #fafbff;
+}
+
+
+/* =========================================================
+   CUSTOMER
+========================================================= */
+
+.customer {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #ede9fe;
+
+  color: #6d28d9;
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.customer strong {
+  display: block;
+
+  font-size: 11px;
+}
+
+.customer small {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #9ca3af;
+
+  font-size: 9px;
+}
+
+
+/* =========================================================
+   FAILURE
+========================================================= */
+
+.failure {
+  color: #dc2626;
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   PROBABILITY
+========================================================= */
+
+.probability {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  min-width: 115px;
+}
+
+.probability-bar {
+  width: 70px;
+  height: 6px;
+
+  overflow: hidden;
+
+  border-radius: 10px;
+
+  background: #e5e7eb;
+}
+
+.probability-fill {
+  height: 100%;
+
+  border-radius: 10px;
+
+  background: #7c3aed;
+}
+
+.probability span {
+  color: #374151;
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   AI ACTION
+========================================================= */
+
+.action {
+  display: inline-block;
+
+  padding: 5px 8px;
+
+  border-radius: 6px;
+
+  background: #f3f4f6;
+
+  color: #374151;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status {
+  display: inline-block;
+
+  padding: 5px 8px;
+
+  border-radius: 6px;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  white-space: nowrap;
+
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+
+/* SUCCESS */
+
+.status.recovered,
+.status.success {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+
+/* FAILED */
+
+.status.recovery-failed,
+.status.failed {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+
+/* PENDING */
+
+.status.payment-pending {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+
+/* STOPPED */
+
+.status.stopped {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+
+/* ESCALATED */
+
+.status.escalated {
+  background: #ffedd5;
+  color: #c2410c;
+}
+
+
+/* =========================================================
+   ANALYZE BUTTON
+========================================================= */
+
+.recover-btn {
+  border: none;
+
+  padding: 7px 11px;
+
+  border-radius: 7px;
+
+  background: #7c3aed;
+
+  color: white;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition: 0.15s;
+}
+
+.recover-btn:hover {
+  background: #6d28d9;
+
+  transform: translateY(-1px);
+}
+
+.recover-btn:active {
+  transform: translateY(0);
+}
+
+
+/* =========================================================
+   DETAILS PANEL
+========================================================= */
+
+.details-panel {
+  padding-bottom: 25px;
+}
+
+.close-btn {
+  width: 30px;
+  height: 30px;
+
+  border: none;
+
+  border-radius: 7px;
+
+  background: #f3f4f6;
+
+  color: #6b7280;
+
+  font-size: 20px;
+
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  background: #e5e7eb;
+}
+
+
+/* =========================================================
+   DECISION GRID
+========================================================= */
+
+.decision-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 14px;
+
+  padding: 20px 23px;
+}
+
+.decision-card {
+  min-height: 95px;
+
+  padding: 16px;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 10px;
+
+  background: #fafafa;
+}
+
+.decision-card small {
+  display: block;
+
+  color: #6b7280;
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.decision-card strong {
+  display: block;
+
+  margin-top: 10px;
+
+  color: #111827;
+
+  font-size: 17px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   POLICY DECISION COLORS
+========================================================= */
+
+.decision-card:nth-child(4) strong {
+  color: #15803d;
+}
+
+
+/* =========================================================
+   TIMELINE
+========================================================= */
+
+.timeline-section {
+  padding: 5px 23px 20px;
+}
+
+.timeline-section h4 {
+  margin: 0 0 17px;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.timeline {
+  display: flex;
+
+  gap: 0;
+
+  overflow-x: auto;
+}
+
+.timeline-item {
+  min-width: 125px;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: 8px;
+
+  position: relative;
+
+  padding-right: 22px;
+}
+
+.timeline-dot {
+  width: 25px;
+  height: 25px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #ede9fe;
+
+  color: #6d28d9;
+
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.timeline-item strong {
+  display: block;
+
+  font-size: 9px;
+
+  color: #374151;
+}
+
+.timeline-item span {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #9ca3af;
+
+  font-size: 8px;
+}
+
+
+/* =========================================================
+   REASONING
+========================================================= */
+
+.reasoning-box {
+  margin: 0 23px 20px;
+
+  padding: 17px;
+
+  border: 1px solid #ddd6fe;
+
+  border-radius: 10px;
+
+  background: #faf5ff;
+}
+
+.reasoning-title {
+  margin-bottom: 7px;
+
+  color: #6d28d9;
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.reasoning-box p {
+  margin: 0;
+
+  color: #4b5563;
+
+  font-size: 11px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   FINAL RESULT
+========================================================= */
+
+.final-result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin: 0 23px;
+
+  padding: 14px 17px;
+
+  border-radius: 9px;
+
+  background: #f9fafb;
+}
+
+.final-result span {
+  color: #6b7280;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.final-result strong {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.final-result strong.recovered,
+.final-result strong.success {
+  color: #15803d;
+}
+
+.final-result strong.recovery-failed,
+.final-result strong.failed {
+  color: #dc2626;
+}
+
+.final-result strong.payment-pending {
+  color: #d97706;
+}
+
+.final-result strong.stopped {
+  color: #4b5563;
+}
+
+.final-result strong.escalated {
+  color: #ea580c;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading-screen {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f5f7fb;
+
+  color: #7c3aed;
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1200px) {
+
+  .kpi-grid,
+  .secondary-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+  .decision-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+}
+
+
+@media (max-width: 800px) {
+
+  .sidebar {
+    width: 210px;
+  }
+
+  .main {
+    margin-left: 210px;
+
+    width: calc(100% - 210px);
+
+    padding: 22px;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .sidebar {
+    display: none;
+  }
+
+  .main {
+    margin-left: 0;
+
+    width: 100%;
+
+    padding: 18px;
+  }
+
+  .header {
+    align-items: flex-start;
+
+    gap: 15px;
+  }
+
+  .header h2 {
+    font-size: 21px;
+  }
+
+  .kpi-grid,
+  .secondary-grid,
+  .decision-grid {
+    grid-template-columns: 1fr;
+  }
+
+}

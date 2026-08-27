@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RecoverAI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 22px 40px;
+        }
+
+        header h1 {
+            font-size: 28px;
+        }
+
+        header p {
+            margin-top: 5px;
+            color: #cbd5e1;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .search-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+            display: flex;
+            gap: 12px;
+        }
+
+        input {
+            flex: 1;
+            padding: 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 13px 22px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .loading {
+            margin-top: 20px;
+            display: none;
+            font-weight: bold;
+        }
+
+        .dashboard {
+            margin-top: 25px;
+            display: none;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .card .value {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .section {
+            background: white;
+            margin-top: 20px;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .section h2 {
+            margin-bottom: 18px;
+        }
+
+        .row {
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .label {
+            font-weight: bold;
+            display: inline-block;
+            width: 220px;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        .error {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fee2e2;
+            color: #991b1b;
+            border-radius: 8px;
+            display: none;
+        }
+
+        @media (max-width: 700px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .label {
+                width: auto;
+                display: block;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>RecoverAI</h1>
+    <p>Autonomous Payment Recovery Agent</p>
+</header>
+
+<div class="container">
+
+    <div class="search-box">
+        <input
+            id="transactionId"
+            placeholder="Enter Transaction ID e.g. TXN_1001"
+        >
+
+        <button onclick="runAgent()">
+            Run RecoverAI
+        </button>
+    </div>
+
+    <div id="loading" class="loading">
+        🤖 RecoverAI is investigating the payment...
+    </div>
+
+    <div id="error" class="error"></div>
+
+    <div id="dashboard" class="dashboard">
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>TRANSACTION</h3>
+                <div id="transaction" class="value">-</div>
+            </div>
+
+            <div class="card">
+                <h3>RECOVERY PROBABILITY</h3>
+                <div id="probability" class="value">-</div>
+            </div>
+
+            <div class="card">
+                <h3>EXPECTED RECOVERY VALUE</h3>
+                <div id="erv" class="value">-</div>
+            </div>
+
+        </div>
+
+        <div class="section">
+
+            <h2>🔍 Investigation</h2>
+
+            <div class="row">
+                <span class="label">Failure Reason</span>
+                <span id="failureReason">-</span>
+            </div>
+
+            <div class="row">
+                <span class="label">Payment Method</span>
+                <span id="paymentMethod">-</span>
+            </div>
+
+            <div class="row">
+                <span class="label">Customer Success Rate</span>
+                <span id="successRate">-</span>
+            </div>
+
+        </div>
+
+        <div class="section">
+
+            <h2>🧠 AI Decision</h2>
+
+            <div class="row">
+                <span class="label">Recommended Action</span>
+                <span id="action">-</span>
+            </div>
+
+            <div class="row">
+                <span class="label">Priority</span>
+                <span id="priority">-</span>
+            </div>
+
+            <div class="row">
+                <span class="label">AI Reasoning</span>
+                <span id="reasoning">-</span>
+            </div>
+
+        </div>
+
+        <div class="section">
+
+            <h2>🛡️ Policy</h2>
+
+            <div class="row">
+                <span class="label">Decision</span>
+                <span id="policyDecision" class="status">-</span>
+            </div>
+
+            <div class="row">
+                <span class="label">Reason</span>
+                <span id="policyReason">-</span>
+            </div>
+
+        </div>
+
+        <div class="section">
+
+            <h2>⚙️ Execution & Verification</h2>
+
+            <div class="row">
+                <span class="label">Execution</span>
+                <span id="execution">-</span>
+            </div>
+
+            <div class="row">
+                <span class="label">Verification</span>
+                <span id="verification">-</span>
+            </div>
+
+            <div class="row">
+                <span class="label">Final Status</span>
+                <span id="finalStatus" class="status">-</span>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+async function runAgent() {
+
+    const transactionId =
+        document.getElementById("transactionId").value.trim();
+
+    if (!transactionId) {
+        showError("Please enter a transaction ID.");
+        return;
+    }
+
+    document.getElementById("loading").style.display = "block";
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("error").style.display = "none";
+
+    try {
+
+        const response = await fetch(
+            `http://127.0.0.1:8000/agent/recover/${transactionId}`
+        );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(
+            data.message || "Recovery agent failed."
+        );
+    }
+
+    if (data.status === "ERROR") {
+        throw new Error(
+            data.message || "Transaction not found."
+        );
+    }
+
+    displayResult(data);
+
+    } catch (error) {
+
+        showError(error.message);
+
+    } finally {
+
+        document.getElementById("loading").style.display = "none";
+    }
+}
+
+
+function displayResult(data) {
+
+    document.getElementById("dashboard").style.display = "block";
+
+    document.getElementById("transaction").textContent =
+        data.transaction_id || "-";
+
+    document.getElementById("probability").textContent =
+        data.recovery_probability !== undefined
+            ? data.recovery_probability + "%"
+            : "-";
+
+    document.getElementById("erv").textContent =
+        data.expected_recovery_value !== undefined
+            ? "₹" + data.expected_recovery_value
+            : "-";
+
+    const investigation = data.investigation || {};
+
+    document.getElementById("failureReason").textContent =
+        investigation.failure_reason || "-";
+
+    document.getElementById("paymentMethod").textContent =
+        investigation.payment_method || "-";
+
+    document.getElementById("successRate").textContent =
+        investigation.customer_success_rate !== undefined
+            ? investigation.customer_success_rate + "%"
+            : "-";
+
+
+    const intervention = data.intervention || {};
+
+    document.getElementById("action").textContent =
+        intervention.action || "-";
+
+    document.getElementById("priority").textContent =
+        intervention.priority || "-";
+
+
+    const reasoning = data.ai_reasoning || {};
+
+    document.getElementById("reasoning").textContent =
+        reasoning.reasoning || "-";
+
+
+    const policy = data.policy || {};
+
+    document.getElementById("policyDecision").textContent =
+        policy.decision || "-";
+
+    document.getElementById("policyReason").textContent =
+        policy.reason || "-";
+
+
+    const execution = data.execution || {};
+
+    document.getElementById("execution").textContent =
+        execution.status || "Not executed";
+
+
+    const verification = data.verification || {};
+
+    document.getElementById("verification").textContent =
+        verification.status || "Pending";
+
+
+    document.getElementById("finalStatus").textContent =
+        data.final_status || "-";
+}
+
+
+function showError(message) {
+
+    const error = document.getElementById("error");
+
+    error.textContent = message;
+
+    error.style.display = "block";
+}
+
+</script>
+
+</body>
+</html>
