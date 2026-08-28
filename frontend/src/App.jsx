@@ -7,11 +7,44 @@ const API_BASE_URL = "http://127.0.0.1:8000";
 function App() {
   const [dashboard, setDashboard] = useState(null);
   const [transactions, setTransactions] = useState([]);
+  const [allLogs, setAllLogs] = useState([]);
   const [selected, setSelected] = useState(null);
 
   const [loading, setLoading] = useState(true);
   const [analyzing, setAnalyzing] = useState(false);
   const [error, setError] = useState("");
+
+  // =========================================================
+  // ACTIVE PAGE (Overview / Transactions / Recovery Agent / Audit Logs)
+  // =========================================================
+
+  const [view, setView] = useState("overview");
+
+  const navItems = [
+    { id: "overview", icon: "◈", label: "Overview" },
+    { id: "transactions", icon: "◉", label: "Transactions" },
+    { id: "agent", icon: "⚡", label: "Recovery Agent" },
+    { id: "logs", icon: "▣", label: "Audit Logs" },
+  ];
+
+  const pageTitles = {
+    overview: {
+      heading: "Revenue Recovery Overview",
+      subtext: "Autonomous payment investigation, decision and recovery",
+    },
+    transactions: {
+      heading: "Transactions",
+      subtext: "Every transaction RecoverAI has processed",
+    },
+    agent: {
+      heading: "Recovery Agent",
+      subtext: "Run the autonomous recovery agent on a transaction",
+    },
+    logs: {
+      heading: "Audit Logs",
+      subtext: "Full decision history — every attempt, not just the latest",
+    },
+  };
 
   // =========================================================
   // FORMAT CURRENCY
@@ -72,6 +105,10 @@ function App() {
         : logsData?.logs ||
           logsData?.recovery_logs ||
           [];
+
+      // Full, un-deduped history for the Audit Logs page —
+      // every attempt on every transaction, not just the latest.
+      setAllLogs(logs);
 
       /*
        * Show only the latest recovery record for each transaction.
@@ -215,25 +252,19 @@ function App() {
 
         <nav>
 
-          <div className="nav-item active">
-            <span>◈</span>
-            Overview
-          </div>
-
-          <div className="nav-item">
-            <span>◉</span>
-            Transactions
-          </div>
-
-          <div className="nav-item">
-            <span>⚡</span>
-            Recovery Agent
-          </div>
-
-          <div className="nav-item">
-            <span>▣</span>
-            Audit Logs
-          </div>
+          {navItems.map((item) => (
+            <div
+              key={item.id}
+              className={
+                `nav-item ${view === item.id ? "active" : ""}`
+              }
+              onClick={() => setView(item.id)}
+              style={{ cursor: "pointer" }}
+            >
+              <span>{item.icon}</span>
+              {item.label}
+            </div>
+          ))}
 
         </nav>
 
@@ -280,12 +311,11 @@ function App() {
           <div>
 
             <h2>
-              Revenue Recovery Overview
+              {pageTitles[view].heading}
             </h2>
 
             <p>
-              Autonomous payment investigation,
-              decision and recovery
+              {pageTitles[view].subtext}
             </p>
 
           </div>
@@ -327,9 +357,10 @@ function App() {
 
 
         {/* ================================================= */}
-        {/* KPI CARDS */}
+        {/* KPI CARDS (Overview only) */}
         {/* ================================================= */}
 
+        {view === "overview" && (
         <section className="kpi-grid">
 
           {/* REVENUE AT RISK */}
@@ -422,12 +453,14 @@ function App() {
           </div>
 
         </section>
+        )}
 
 
         {/* ================================================= */}
-        {/* SECONDARY METRICS */}
+        {/* SECONDARY METRICS (Overview only) */}
         {/* ================================================= */}
 
+        {view === "overview" && (
         <section className="secondary-grid">
 
           {/* PENDING */}
@@ -536,12 +569,16 @@ function App() {
           </div>
 
         </section>
+        )}
 
 
         {/* ================================================= */}
-        {/* TRANSACTIONS */}
+        {/* TRANSACTIONS TABLE */}
+        {/* Shown on Overview, Transactions, and Recovery Agent  */}
+        {/* pages — same underlying data, different framing.     */}
         {/* ================================================= */}
 
+        {(view === "overview" || view === "transactions" || view === "agent") && (
         <section className="panel">
 
           {/* PANEL HEADER */}
@@ -551,11 +588,15 @@ function App() {
             <div>
 
               <h3>
-                Recovery Activity
+                {view === "agent"
+                  ? "Run Recovery Agent"
+                  : "Recovery Activity"}
               </h3>
 
               <p>
-                Transactions processed by RecoverAI
+                {view === "agent"
+                  ? "Click Analyze to run the agent on a transaction — detect, decide, execute, and log the result."
+                  : "Transactions processed by RecoverAI"}
               </p>
 
             </div>
@@ -815,6 +856,112 @@ function App() {
           </div>
 
         </section>
+        )}
+
+
+        {/* ================================================= */}
+        {/* AUDIT LOGS — full, non-deduped decision history */}
+        {/* ================================================= */}
+
+        {view === "logs" && (
+        <section className="panel">
+
+          <div className="panel-header">
+
+            <div>
+              <h3>Audit Trail</h3>
+              <p>Every recovery decision ever logged, oldest actions included</p>
+            </div>
+
+            <span className="transaction-count">
+              {allLogs.length} log entries
+            </span>
+
+          </div>
+
+          <div className="table-container">
+
+            <table>
+
+              <thead>
+                <tr>
+                  <th>Transaction</th>
+                  <th>Action</th>
+                  <th>Recovery Probability</th>
+                  <th>Policy Decision</th>
+                  <th>Final Status</th>
+                  <th>Amount Recovered</th>
+                  <th>Timestamp</th>
+                </tr>
+              </thead>
+
+              <tbody>
+
+                {allLogs.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan="7"
+                      style={{
+                        textAlign: "center",
+                        padding: "35px",
+                        color: "#9ca3af",
+                      }}
+                    >
+                      No audit log entries found.
+                    </td>
+                  </tr>
+                ) : (
+                  allLogs.map((log, index) => (
+                    <tr key={`${log.transaction_id}-${index}`}>
+
+                      <td><strong>{log.transaction_id}</strong></td>
+
+                      <td>
+                        <span className="action">
+                          {log.action || "—"}
+                        </span>
+                      </td>
+
+                      <td>
+                        {log.recovery_probability ?? 0}%
+                      </td>
+
+                      <td>
+                        {log.policy_decision || "—"}
+                      </td>
+
+                      <td>
+                        <span
+                          className={
+                            `status ${statusClass(log.final_status)}`
+                          }
+                        >
+                          {log.final_status || "UNKNOWN"}
+                        </span>
+                      </td>
+
+                      <td>
+                        {formatCurrency(log.amount_recovered)}
+                      </td>
+
+                      <td>
+                        {log.timestamp
+                          ? new Date(log.timestamp).toLocaleString()
+                          : "—"}
+                      </td>
+
+                    </tr>
+                  ))
+                )}
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </section>
+        )}
 
 
         {/* ================================================= */}
